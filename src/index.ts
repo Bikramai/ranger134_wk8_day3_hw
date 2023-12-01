@@ -1,77 +1,47 @@
 import {v4 as uuid} from "uuid"
 
+// OOP Solution
 
-//     static removeQuantityFromCart(item: Item, user: User, quantity: number): void {
-//         const itemIndex = user.cart.findIndex(cartItem => cartItem.id === item.id);
+// Define types of properties
+class Item {
+  id: string;
+  name: string;
+  price: number;
+  description: string;
 
-//         if (itemIndex !== -1) {
-//             user.cart[itemIndex].price -= quantity;
-//             if (user.cart[itemIndex].price <= 0) {
-//                 user.cart.splice(itemIndex, 1);
-//             }
-//         }
-//     }
-
-//     static cartTotal(user: User): number {
-//         return user.cart.reduce((total, item) => total + item.price, 0);
-//     }
-
-//     static printCart(user: User): void {
-//         console.log("User's Cart:");
-//         user.cart.forEach(item => {
-//             console.log(`- ${item.name}: $${item.price.toFixed(2)}`);
-//         });
-//     }
-// }
-
-
-
-// Type to describe an Item
-type Item = {
-    id: string;
-    name: string;
-    price: number;
-    description: string;
-  };
-  
-  // Type to describe a User
-  type User = {
-    id: string;
-    name: string;
-    age: number;
-    cart: Item[];
-  };
-  
-  // Step 3: Create some functions
-  
-  function createUser(name: string, age: number): User {
-    return {
-      id: uuid(),
-      name,
-      age,
-      cart: [],
-    };
+  constructor(name: string, price: number, description: string) {
+  // Assigning the properties 
+    this.id = uuid();
+    this.name = name;
+    this.price = price;
+    this.description = description;
   }
-  
-  function createItem(name: string, price: number, description: string): Item {
-    return {
-      id: uuid(),
-      name,
-      price,
-      description,
-    };
+}
+
+class User {
+  id: string;
+  name: string;
+  age: number;
+  cart: Item[];
+
+  constructor(name: string, age: number) {
+    this.id = uuid();
+    this.name = name;
+    this.age = age;
+    this.cart = [];
   }
-  
-  function addToCart(item: Item, user: User): void {
-    user.cart.push(item);
+
+  // Methods addtocart, removetocart, removequantityfromcart, cartotal, printcart
+  addToCart(item: Item): void {
+    this.cart.push(item);
   }
-  
-  function removeFromCart(item: Item, user: User): void {
-    user.cart = user.cart.filter((cartItem) => cartItem.id !== item.id);
+
+  removeFromCart(item: Item): void {
+    this.cart = this.cart.filter((cartItem) => cartItem.id !== item.id);
   }
-  
-  function removeQuantityFromCart(item: Item, user: User, quantity: number): void {
-    user.cart = user.cart.filter((cartItem) => {
+
+  removeQuantityFromCart(item: Item, quantity: number): void {
+    this.cart = this.cart.filter((cartItem) => {
       if (cartItem.id === item.id) {
         quantity--;
         return quantity >= 0;
@@ -79,43 +49,139 @@ type Item = {
       return true;
     });
   }
-  
-  function cartTotal(user: User): number {
-    return user.cart.reduce((total, item) => total + item.price, 0);
+
+  cartTotal(): number {
+    return this.cart.reduce((total, item) => total + item.price, 0);
   }
-  
-  function printCart(user: User): void {
+
+  printCart(): void {
     console.log('User Cart:');
-    user.cart.forEach((item) => {
+    this.cart.forEach((item) => {
       console.log(`- ${item.name}: $${item.price}`);
     });
   }
+}
+
+// Create Driver Code
+const user = new User('Bikram P', 25);
+
+const coding = new Item('Coding', 59.99, 'Bootcamp Coding Book');
+const python = new Item('python', 49.99, 'Advanced Python coding');
+const typescript = new Item('Typescrip', 29.99, 'Basic Typescript');
+
+
+user.addToCart(coding);
+user.printCart();
+
+console.log(`Total: $${user.cartTotal()}`);
+
+user.removeFromCart(coding);
+user.printCart();
+
+user.addToCart(coding);
+user.addToCart(python);
+user.addToCart(typescript);
+user.printCart();
+
+user.removeQuantityFromCart(coding, 1);
+user.printCart();
+
+console.log(`Total: $${user.cartTotal()}`);
+
+
+
+
+
+// // Type to describe an Item
+// type Item = {
+//     id: string;
+//     name: string;
+//     price: number;
+//     description: string;
+//   };
   
-  // Step 4: Create Driver Code
+//   // Type to describe a User
+//   type User = {
+//     id: string;
+//     name: string;
+//     age: number;
+//     cart: Item[];
+//   };
   
-  const user = createUser('Bikram P', 25);
+//   // Step 3: Create some functions
   
-  const itemA = createItem('Item A', 10, 'Coding Book');
-  const itemB = createItem('Item B', 15, 'Python coding');
-  const itemC = createItem('Item C', 20, 'Typescript');
+//   function createUser(name: string, age: number): User {
+//     return {
+//       id: uuid(),
+//       name,
+//       age,
+//       cart: [],
+//     };
+//   }
   
-  addToCart(itemA, user);
-  printCart(user);
+//   function createItem(name: string, price: number, description: string): Item {
+//     return {
+//       id: uuid(),
+//       name,
+//       price,
+//       description,
+//     };
+//   }
   
-  console.log(`Total: $${cartTotal(user)}`);
+//   function addToCart(item: Item, user: User): void {
+//     user.cart.push(item);
+//   }
   
-  removeFromCart(itemA, user);
-  printCart(user);
+//   function removeFromCart(item: Item, user: User): void {
+//     user.cart = user.cart.filter((cartItem) => cartItem.id !== item.id);
+//   }
   
-  addToCart(itemA, user);
-  addToCart(itemB, user);
-  addToCart(itemC, user);
-  printCart(user);
+//   function removeQuantityFromCart(item: Item, user: User, quantity: number): void {
+//     user.cart = user.cart.filter((cartItem) => {
+//       if (cartItem.id === item.id) {
+//         quantity--;
+//         return quantity >= 0;
+//       }
+//       return true;
+//     });
+//   }
   
-  removeQuantityFromCart(itemA, user, 2);
-  printCart(user);
+//   function cartTotal(user: User): number {
+//     return user.cart.reduce((total, item) => total + item.price, 0);
+//   }
   
-  console.log(`Total: $${cartTotal(user)}`);
+//   function printCart(user: User): void {
+//     console.log('User Cart:');
+//     user.cart.forEach((item) => {
+//       console.log(`- ${item.name}: $${item.price}`);
+//     });
+//   }
+  
+//   // Step 4: Create Driver Code
+  
+//   const user = createUser('Bikram P', 25);
+  
+//   const itemA = createItem('Item A', 10, 'Coding Book');
+//   const itemB = createItem('Item B', 15, 'Python coding');
+//   const itemC = createItem('Item C', 20, 'Typescript');
+  
+//   addToCart(itemA, user);
+//   printCart(user);
+  
+//   console.log(`Total: $${cartTotal(user)}`);
+  
+//   removeFromCart(itemA, user);
+//   printCart(user);
+  
+//   addToCart(itemA, user);
+//   addToCart(itemB, user);
+//   addToCart(itemC, user);
+//   printCart(user);
+  
+//   removeQuantityFromCart(itemA, user, 2);
+//   printCart(user);
+  
+//   console.log(`Total: $${cartTotal(user)}`);
 
 
 

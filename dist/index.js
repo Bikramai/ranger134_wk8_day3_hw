@@ -1,64 +1,139 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const uuid_1 = require("uuid");
-// Step 3: Create some functions
-function createUser(name, age) {
-    return {
-        id: (0, uuid_1.v4)(),
-        name,
-        age,
-        cart: [],
-    };
+// OOP Solution
+// Define types of properties
+class Item {
+    constructor(name, price, description) {
+        // Assigning the properties 
+        this.id = (0, uuid_1.v4)();
+        this.name = name;
+        this.price = price;
+        this.description = description;
+    }
 }
-function createItem(name, price, description) {
-    return {
-        id: (0, uuid_1.v4)(),
-        name,
-        price,
-        description,
-    };
+class User {
+    constructor(name, age) {
+        this.id = (0, uuid_1.v4)();
+        this.name = name;
+        this.age = age;
+        this.cart = [];
+    }
+    // Methods addtocart, removetocart, removequantityfromcart, cartotal, printcart
+    addToCart(item) {
+        this.cart.push(item);
+    }
+    removeFromCart(item) {
+        this.cart = this.cart.filter((cartItem) => cartItem.id !== item.id);
+    }
+    removeQuantityFromCart(item, quantity) {
+        this.cart = this.cart.filter((cartItem) => {
+            if (cartItem.id === item.id) {
+                quantity--;
+                return quantity >= 0;
+            }
+            return true;
+        });
+    }
+    cartTotal() {
+        return this.cart.reduce((total, item) => total + item.price, 0);
+    }
+    printCart() {
+        console.log('User Cart:');
+        this.cart.forEach((item) => {
+            console.log(`- ${item.name}: $${item.price}`);
+        });
+    }
 }
-function addToCart(item, user) {
-    user.cart.push(item);
-}
-function removeFromCart(item, user) {
-    user.cart = user.cart.filter((cartItem) => cartItem.id !== item.id);
-}
-function removeQuantityFromCart(item, user, quantity) {
-    user.cart = user.cart.filter((cartItem) => {
-        if (cartItem.id === item.id) {
-            quantity--;
-            return quantity >= 0;
-        }
-        return true;
-    });
-}
-function cartTotal(user) {
-    return user.cart.reduce((total, item) => total + item.price, 0);
-}
-function printCart(user) {
-    console.log('User Cart:');
-    user.cart.forEach((item) => {
-        console.log(`- ${item.name}: $${item.price}`);
-    });
-}
-// Step 4: Create Driver Code
-const user = createUser('Bikram P', 25);
-const itemA = createItem('Item A', 10, 'Coding Book');
-const itemB = createItem('Item B', 15, 'Python coding');
-const itemC = createItem('Item C', 20, 'Typescript');
-addToCart(itemA, user);
-printCart(user);
-console.log(`Total: $${cartTotal(user)}`);
-removeFromCart(itemA, user);
-printCart(user);
-addToCart(itemA, user);
-addToCart(itemB, user);
-addToCart(itemC, user);
-printCart(user);
-removeQuantityFromCart(itemA, user, 2);
-printCart(user);
-console.log(`Total: $${cartTotal(user)}`);
+// Create Driver Code
+const user = new User('Bikram P', 25);
+const coding = new Item('Coding', 59.99, 'Bootcamp Coding Book');
+const python = new Item('python', 49.99, 'Advanced Python coding');
+const typescript = new Item('Typescrip', 29.99, 'Basic Typescript');
+user.addToCart(coding);
+user.printCart();
+console.log(`Total: $${user.cartTotal()}`);
+user.removeFromCart(coding);
+user.printCart();
+user.addToCart(coding);
+user.addToCart(python);
+user.addToCart(typescript);
+user.printCart();
+user.removeQuantityFromCart(coding, 1);
+user.printCart();
+console.log(`Total: $${user.cartTotal()}`);
+// // Type to describe an Item
+// type Item = {
+//     id: string;
+//     name: string;
+//     price: number;
+//     description: string;
+//   };
+//   // Type to describe a User
+//   type User = {
+//     id: string;
+//     name: string;
+//     age: number;
+//     cart: Item[];
+//   };
+//   // Step 3: Create some functions
+//   function createUser(name: string, age: number): User {
+//     return {
+//       id: uuid(),
+//       name,
+//       age,
+//       cart: [],
+//     };
+//   }
+//   function createItem(name: string, price: number, description: string): Item {
+//     return {
+//       id: uuid(),
+//       name,
+//       price,
+//       description,
+//     };
+//   }
+//   function addToCart(item: Item, user: User): void {
+//     user.cart.push(item);
+//   }
+//   function removeFromCart(item: Item, user: User): void {
+//     user.cart = user.cart.filter((cartItem) => cartItem.id !== item.id);
+//   }
+//   function removeQuantityFromCart(item: Item, user: User, quantity: number): void {
+//     user.cart = user.cart.filter((cartItem) => {
+//       if (cartItem.id === item.id) {
+//         quantity--;
+//         return quantity >= 0;
+//       }
+//       return true;
+//     });
+//   }
+//   function cartTotal(user: User): number {
+//     return user.cart.reduce((total, item) => total + item.price, 0);
+//   }
+//   function printCart(user: User): void {
+//     console.log('User Cart:');
+//     user.cart.forEach((item) => {
+//       console.log(`- ${item.name}: $${item.price}`);
+//     });
+//   }
+//   // Step 4: Create Driver Code
+//   const user = createUser('Bikram P', 25);
+//   const itemA = createItem('Item A', 10, 'Coding Book');
+//   const itemB = createItem('Item B', 15, 'Python coding');
+//   const itemC = createItem('Item C', 20, 'Typescript');
+//   addToCart(itemA, user);
+//   printCart(user);
+//   console.log(`Total: $${cartTotal(user)}`);
+//   removeFromCart(itemA, user);
+//   printCart(user);
+//   addToCart(itemA, user);
+//   addToCart(itemB, user);
+//   addToCart(itemC, user);
+//   printCart(user);
+//   removeQuantityFromCart(itemA, user, 2);
+//   printCart(user);
+//   console.log(`Total: $${cartTotal(user)}`);
 function testMe(name) {
     console.log(name);
 }

@@ -45,21 +45,45 @@ class User {
         });
     }
 }
+class Shop {
+    constructor() {
+        // Initialize the shop with some items
+        this.items = [
+            new Item('Coding', 59.99, 'Bootcamp Coding Book'),
+            new Item('python', 49.99, 'Advanced Python coding'),
+            new Item('Typescript', 29.99, 'Basic Typescript'),
+        ];
+    }
+    getAvailableItems() {
+        return this.items;
+    }
+}
 // Create Driver Code
+const shop = new Shop();
 const user = new User('Bikram P', 25);
-const coding = new Item('Coding', 59.99, 'Bootcamp Coding Book');
-const python = new Item('python', 49.99, 'Advanced Python coding');
-const typescript = new Item('Typescrip', 29.99, 'Basic Typescript');
-user.addToCart(coding);
+const itemA = new Item('Coding', 59.99, 'Bootcamp Coding Book');
+const itemB = new Item('python', 49.99, 'Advanced Python coding');
+const itemC = new Item('Typescript', 29.99, 'Basic Typescript');
+user.addToCart(itemA);
+user.addToCart(itemB);
+user.addToCart(itemC);
 user.printCart();
 console.log(`Total: $${user.cartTotal()}`);
-user.removeFromCart(coding);
+// user.removeFromCart(availableItems[1]);
+// user.printCart();
+// Add items from the shop to the user's cart
+const availableItems = shop.getAvailableItems();
+user.addToCart(availableItems[0]);
+user.addToCart(availableItems[1]);
+user.addToCart(availableItems[2]);
 user.printCart();
-user.addToCart(coding);
-user.addToCart(python);
-user.addToCart(typescript);
-user.printCart();
-user.removeQuantityFromCart(coding, 1);
+// Print the user's cart
+// console.log('User Cart after adding items:');
+// user.printCart();
+// console.log(`Total: $${user.cartTotal()}`);
+// Remove a quantity from the cart
+user.removeQuantityFromCart(availableItems[2], 1);
+console.log('User Cart after removing all of a singular item:');
 user.printCart();
 console.log(`Total: $${user.cartTotal()}`);
 // // Type to describe an Item
